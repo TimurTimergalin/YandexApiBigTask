@@ -9,8 +9,8 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.ll = [49, 55]
-        self.spn = [180.0, 90.0]
+        self.ll = [0, 0]
+        self.spn = [30.0, 30.0]
         self.static_API()
 
     def static_API(self):
@@ -28,8 +28,8 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         with open('img.png', 'wb') as file:
             file.write(response.content)
         self.image = QtGui.QPixmap('img.png')
-        self.show_map()
         print('changed')
+        self.show_map()
 
     def show_map(self):
         self.label.setPixmap(self.image)
@@ -42,7 +42,6 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.spn[1] *= 1.5
                 if self.spn[0] > 180 or self.spn[1] > 90:
                     self.spn = [180, 90]
-                print(e.key())
                 self.static_API()
         if e.key() == QtCore.Qt.Key_PageDown:
             if self.spn[0] > 0.001 and self.spn[1] > 0.001:
@@ -50,8 +49,31 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.spn[1] *= 0.5
                 if self.spn[0] < 0.001 or self.spn[1] < 0.001:
                     self.spn = [0.001, 0.001]
-                print(e.key())
                 self.static_API()
+        if e.key() == QtCore.Qt.Key_Up:
+            if -90 < self.ll[1] < 90:
+                self.ll[1] += 50 * ((self.spn[0] + self.spn[1]) / 2) / 180
+                if not (-90 < self.ll[1] < 90):
+                    self.ll[1] = 0
+                self.static_API()
+        if e.key() == QtCore.Qt.Key_Down:
+            if -90 < self.ll[1] < 90:
+                self.ll[1] -= 50 * ((self.spn[0] + self.spn[1]) / 2) / 180
+                if not (-90 < self.ll[1] < 90):
+                    self.ll[1] = 0
+                self.static_API()
+        if e.key() == QtCore.Qt.Key_Right:
+            self.ll[0] += 50 * ((self.spn[0] + self.spn[1]) / 2) / 180
+            if self.ll[0] > 180:
+                self.ll[0] -= 360
+            self.static_API()
+        if e.key() == QtCore.Qt.Key_Left:
+            self.ll[0] -= 50 * ((self.spn[0] + self.spn[1]) / 2) / 180
+            if self.ll[0] < -180:
+                self.ll[0] += 360
+            self.static_API()
+
+        print(e.key())
 
 
 def exit_(app):
