@@ -12,6 +12,7 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ll = [0, 0]
         self.spn = [180.0, 90.0]
         self.l = ''
+        self.pt_cords = None
         self.static_API()
         self.mapbox.clicked.connect(self.box_callback)
         self.satbox.clicked.connect(self.box_callback)
@@ -28,6 +29,8 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
             'spn': str(self.spn[0]) + ',' + str(self.spn[1]),
             'l': self.l if self.l else 'map'
         }
+        if self.pt_cords:
+            params['pt'] = str(self.pt_cords[0]) + ',' + str(self.pt_cords[1]) + ',' + 'pm2dbm1'
         address = "http://static-maps.yandex.ru/1.x/"
         response = requests.get(address, params=params)
         try:
@@ -123,6 +126,7 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         spn_x = abs(float(upper[0]) - float(lower[0]))
         spn_y = abs(float(upper[1]) - float(lower[1]))
         self.ll = [float(center[0]), float(center[1])]
+        self.pt_cords = [float(center[0]), float(center[1])]
         self.spn = [spn_x, spn_y]
         print('searched')
         self.static_API()
