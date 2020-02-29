@@ -12,6 +12,7 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ll = [0, 0]
         self.spn = [180.0, 90.0]
         self.l = ''
+        self.address = None
         self.pt_cords = None
         self.static_API()
         self.mapbox.clicked.connect(self.box_callback)
@@ -127,6 +128,8 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         center = toponym['Point']['pos'].split()
         upper = toponym['boundedBy']['Envelope']['upperCorner'].split()
         lower = toponym['boundedBy']['Envelope']['lowerCorner'].split()
+        self.address = toponym['metaDataProperty']['GeocoderMetaData']['Address']['formatted']
+        self.address_label.setText(self.address)
         spn_x = abs(float(upper[0]) - float(lower[0]))
         spn_y = abs(float(upper[1]) - float(lower[1]))
         self.ll = [float(center[0]), float(center[1])]
@@ -138,6 +141,8 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
     def clear_callback(self, instance):
         self.pt_cords = None
         self.static_API()
+        self.address_label.setText('')
+        self.address = None
 
 
 def exit_(app):

@@ -91,7 +91,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="search_buuton">
+   <widget class="QPushButton" name="search_button">
     <property name="geometry">
      <rect>
       <x>770</x>
@@ -115,6 +115,19 @@
     </property>
     <property name="text">
      <string>Сбросить</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="address_label">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>50</y>
+      <width>621</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
