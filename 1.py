@@ -21,6 +21,7 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.satsklbox.clicked.connect(self.box_callback)
         self.sattrfsklbox.clicked.connect(self.box_callback)
         self.search_button.clicked.connect(self.search_callback)
+        self.clear_button.clicked.connect(self.clear_callback)
 
     def static_API(self):
         print('starting changed')
@@ -106,7 +107,10 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.static_API()
 
     def search_callback(self, instance):
-        self.find_toponym(self.address_input.text())
+        try:
+            self.find_toponym(self.address_input.text())
+        except Exception:
+            print('Failed')
 
     def find_toponym(self, geocode):
         print('searching')
@@ -129,6 +133,10 @@ class YandexMapsAPI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pt_cords = [float(center[0]), float(center[1])]
         self.spn = [spn_x, spn_y]
         print('searched')
+        self.static_API()
+
+    def clear_callback(self, instance):
+        self.pt_cords = None
         self.static_API()
 
 
